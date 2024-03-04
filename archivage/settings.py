@@ -39,20 +39,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'reference',
     'etudient',
     'fichier',
-    'referrence',
     'admini',
-   
+    'django_filters',
 ]
 
-
-urlpatterns = [
-    path('etudient/',include('etudient.urls')),
-    path('admini/',include('admini.urls')),
-    path('fichier/',include('fichier.urls')),
-    path('archivage.reference/',include('reference.urls')),
-]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
