@@ -1,67 +1,39 @@
-from django.shortcuts import render
-#from django.http import JsonResponse
-#from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
-#from etudient.models import Etudiant, Delegue 
-from fichier.models import Fichier
-from rest_framework.decorators import api_view
+
+from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Admin
-from .serializers import AdminSerializer
+
+from django.contrib.auth import authenticate, login, logout
+from rest_framework.permissions import IsAuthenticated
+from .serializers import AuthSerializer ,ProfileSerializer
 
 
-@api_view(['GET'])
-def get_Admin(request):
-        admin=Admin.objects.alll()
-        serializer = AdminSerializer(admin,many=False)
-        print(admin)
-        return Response({"Admin":serializer.data})
-def inscription(request):
-    # Logique pour l'inscription d'un nouvel admin
-    if request.method == 'POST':
-        # Traitement de l'inscription
-        return Response({'message': 'Inscription réussie'})
+class LoginView(APIView):
+    def post(self, request):
+        serializer = AuthSerializer(data=request.data)
+        if serializer.is_valid():
+            user = authenticate(request, username=serializer.validated_data['username'], password=serializer.validated_data['password'])
+            if user is not None:
+                login(request, user)
+                return Response({'message': 'Authentification réussie'})
+        return Response({'message': 'Identifiants incorrects'}, status=400)
 
-def authentification(request):
-    # Logique d'authentification de l'admin
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return Response({'message': 'Authentification réussie'})
-        else:
-            return Response({'message': 'Authentification échouée'})
+# Vue de modification de profil
+class ProfileView(APIView):
+    permission_classes = [IsAuthenticated]
 
-def creer_etudiant(request):
-    # Logique pour la création d'un nouvel étudiant
-    if request.method == 'POST':
-        # Traitement de la création de l'étudiant
-        return Response({'message': 'Étudiant créé avec succès'})
+    def post(self, request):
+        serializer = ProfileSerializer(data=request.data)
+        if serializer.is_valid():
+            
+            return Response({'message': 'Profil modifié avec succès'})
+        return Response(serializer.errors, status=400)
 
-def definir_delegue(request):
-    
-    if request.method == 'POST':
-        
-        return Response({'message': 'Délégué défini avec succès'})
 
-def crud_fichier(request):
-    
-    if request.method == 'GET':
-        
-        fichiers = Fichier.objects.all()
-        
-        return Response({'fichiers': fichiers})
-    
-    elif request.method == 'POST':
-        
-        return Response({'message': 'Fichier créé avec succès'})
-    
-    elif request.method == 'PUT':
-        
-        return Response({'message': 'Fichier mis à jour avec succès'})
-    
-    elif request.method == 'DELETE':
+class LogoutView(APIView):
+    permission_classes = [IsAuthenticated]
 
-        return Response({'message': 'Fichier supprimé avec succès'})
+    def post(self, request):
+        logout(request)
+        return Response({'message': 'Déconnexion réussie'})
+
+

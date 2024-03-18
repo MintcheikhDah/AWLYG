@@ -1,6 +1,6 @@
 from django.db import models
 class Niveau(models.Model):
-    niveau_choices = [("L1", "L2"), ("L3","M1"),("M2","M3"),("D1","D2"),("D3","D3")]
+    niveau_choices = [("L1", "L1"), ("L2","L2"),("L3","M1"),("M1","M2"),("M3","D1"),("D1","D2"),("D2","D3")]
     id_niveau = models.AutoField(primary_key=True)
     niveau = models.CharField(choices=niveau_choices, max_length=2)
 

@@ -1,8 +1,11 @@
 #from django.http import JsonResponse
 from .models import Niveau, Filiere, Groupe, AnneeUniversitaire
-from rest_framework.decorators import api_view
+#from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from .permissions import AdministrateurPermission
 class NiveauViews:
+    permission_classes = [AdministrateurPermission]
+
     def lister_niveaux(self, request):
         niveaux = Niveau.objects.all()
         # Serializer les niveaux si nécessaire
@@ -28,6 +31,7 @@ class NiveauViews:
         return Response({'message': 'Niveau supprimé avec succès'})
 
 class FiliereViews:
+    permission_classes = [AdministrateurPermission]
     def lister_filieres(self, request):
         filieres = Filiere.objects.all()
         # Serializer les filières si nécessaire
@@ -53,6 +57,7 @@ class FiliereViews:
         return Response({'message': 'Filière supprimée avec succès'})
 
 class GroupeViews:
+    permission_classes = [AdministrateurPermission]
     def lister_groupes(self, request):
         groupes = Groupe.objects.all()
         # Serializer les groupes si nécessaire
@@ -78,6 +83,7 @@ class GroupeViews:
         return Response({'message': 'Groupe supprimé avec succès'})
 
 class AnneeUniversitaireViews:
+    permission_classes = [AdministrateurPermission]
     def lister_annees(self, request):
         annees = AnneeUniversitaire.objects.all()
         # Serializer les années universitaires si nécessaire
