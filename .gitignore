@@ -1,2 +1,7 @@
 /tuto
 *.pyc
+/.vscode
+/_pycache_
+/migrations
+db.sqlite3
+requirements
