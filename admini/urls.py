@@ -1,8 +1,17 @@
 from django.urls import path
-from .views import LoginView,LogoutView,ProfileView
-
+from .views import AdministrateurCreateView,AdministrateurLogoutView,AdministrateurUpdateView,AdministrateurLoginView
 urlpatterns = [
-    path('profile', ProfileView.as_view(), name='profile'),
-    path('login/', LoginView.as_view(), name='login'),
-    path('logout/', LogoutView.as_view(), name='logout'),
+    # creer un seul admin
+    path('create',AdministrateurCreateView.as_view(), name='administrateur_create'),
+    #cree plusieurs admins
+     path('admini/', AdministrateurCreateView.as_view(), name='administrateur_create'),
+     #deconnexion
+    path('logout/', AdministrateurLogoutView.as_view(), name='administrateur_logout'),
+    #login
+     path('login/', AdministrateurLoginView.as_view(), name='user-login'),
+    #modifie le profile
+    path('profile/', AdministrateurUpdateView.as_view(), name='administrateur_profile'),
+    
 ]
+
+

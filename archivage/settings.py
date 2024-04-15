@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-cgyv(om3i^c^*a&-*_d68$3=36@=tg_kx8r&z2+&%x7&t%cjx+
 DEBUG = True
 
 #ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'admini',
     'django_filters',
     'rest_framework.authtoken',
+    'dj_rest_auth',
+    #'Knox',
     
     
 ]
@@ -55,14 +57,10 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
     ),
-    'DEFAULT_PARSER_CLASSES': [
-        'rest_framework_yaml.parsers.YAMLParser',
-    ],
-    'DEFAULT_RENDERER_CLASSES': [
-        'rest_framework_yaml.renderers.YAMLRenderer',
-    ],
+    
     # ...
 }
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -149,3 +147,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+#AUTH_USER_MODEL = 'etudient.Etudiant'
+# settings.py
+AUTH_USER_MODEL = 'etudient.CustomUser'

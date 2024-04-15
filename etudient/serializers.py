@@ -4,68 +4,54 @@ from .models import Etudiant, Delegue
 
 User = get_user_model()
 
-from rest_framework import serializers
-from .models import Etudiant,Utilisateur,Delegue
-
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Utilisateur
-        fields = ('id', 'nom', 'email', 'password')
-        extra_kwargs = {
-            'password': {'write_only': True},
-        }
-
+# l creation d'un etudiant
 class EtudiantSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
-
     class Meta:
         model = Etudiant
-        fields = ['id', 'user', 'matricule', 'niveau', 'filiere', 'annee', 'groupe']
+        fields = ['id','username', 'email','password', 'matricule', 'niveau', 'filiere', 'annee', 'groupe', 'est_etudient']
 
-    def create(self, validated_data):
-        user_data = validated_data.pop('user')
-        user = User.objects.create_user(**user_data)
-        etudiant = Etudiant.objects.create(user=user, **validated_data)
-        return etudiant
+# l creation d'un delegue
 class DelegueSerializer(serializers.ModelSerializer):
-    etudiant = EtudiantSerializer()
-
     class Meta:
         model = Delegue
-        fields = ['id', 'etudiant', 'is_delegue', 'groups', 'user_permissions']
+        fields = ['id', 'matricule', 'niveau', 'filiere', 'annee', 'groupe', 'is_delegue']
+        extra_kwargs = {'is_delegue': {'default': True}}
 
     def create(self, validated_data):
-        etudiant_data = validated_data.pop('etudiant')
-        etudiant_serializer = EtudiantSerializer(data=etudiant_data)
-        if etudiant_serializer.is_valid():
-            etudiant = etudiant_serializer.create(etudiant_data)
-            delegue = Delegue.objects.create(etudiant=etudiant, **validated_data)
-            return delegue
-        else:
-            raise serializers.ValidationError(etudiant_serializer.errors)
-        
+        user = super().create(validated_data)
+        user.set_password('1234') 
+        user.save()
+        return user
+
+# liste l users
 
 
 
-class USerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Utilisateur
-        fields = '__all__'
-
+#liste l etudiant
 class ESerializer(serializers.ModelSerializer):
-    user = USerializer()
-    niveau = serializers.StringRelatedField()
-    filiere = serializers.StringRelatedField()
-    annee = serializers.StringRelatedField()
-    groupe = serializers.StringRelatedField()
-
+    
     class Meta:
         model = Etudiant
         fields = '__all__'
 
+
+#liste l delegue
 class DSerializer(serializers.ModelSerializer):
     etudiant = ESerializer()
 
     class Meta:
         model = Delegue
         fields = '__all__'
+
+#login
+
+#login
+class EtudiantSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Etudiant
+        fields = ['username', 'password']
+
+class DelegueSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Delegue
+        fields = ['username', 'password']

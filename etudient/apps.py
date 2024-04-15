@@ -1,13 +1,5 @@
 from django.apps import AppConfig
 
-class EtudientConfig(AppConfig):
+class VotreApplicationConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'etudient'
-
-class DelegueConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'delegue'
-
-class UtilisateurConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'utilisateur'

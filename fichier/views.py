@@ -13,11 +13,15 @@ from .models import Fichier
 import mimetypes
 
 
+from django.shortcuts import render
+from .models import Fichier
+from reference.models import Niveau
 
-
+#ajouter
 class FichierListCreate(ListCreateAPIView):
     queryset = Fichier.objects.all()
     serializer_class = FichierSerializer
+#supprimer
 class FichierDelete(RetrieveUpdateDestroyAPIView):
     queryset = Fichier.objects.all()
     serializer_class = FichierSerializer
@@ -26,17 +30,7 @@ class FichierDelete(RetrieveUpdateDestroyAPIView):
         instance = self.get_object()
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-
-
-
-           
-
-
-
-
-
+#modifier
 class FichierUpdate(RetrieveUpdateDestroyAPIView):
     queryset = Fichier.objects.all()
     serializer_class = FichierSerializer
@@ -56,9 +50,7 @@ class FichierUpdate(RetrieveUpdateDestroyAPIView):
     def perform_update(self, serializer):
         instance = serializer.instance
         instance.titre = serializer.validated_data.get('nom', instance.nom)
-
-
-
+#telecharger
 class FichierDownload(APIView):
     def get_file(self, pk):
         try:

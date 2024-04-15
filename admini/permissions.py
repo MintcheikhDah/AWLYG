@@ -12,6 +12,3 @@ class AdminPermission(IsAuthenticated):
     
 
 
-class IsEtudiantOrAdmin(BasePermission):
-    def has_permission(self, request, view):
-        return request.user.is_authenticated and (request.user.is_admin or hasattr(request.user, 'etudiant'))

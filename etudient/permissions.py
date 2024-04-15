@@ -1,4 +1,7 @@
 from rest_framework.permissions import IsAuthenticated, BasePermission
+from .models import Delegue,Etudiant
+from admini.models import Administrateur
+from rest_framework import permissions
 
 class ModifyProfilePermission(BasePermission):
     def has_object_permission(self, request, view, obj):
@@ -7,13 +10,15 @@ class ModifyProfilePermission(BasePermission):
 
 
 
+
+
+    
 class CreerDeleguePermission(BasePermission):
     def has_permission(self, request, view):
         # Vérifier si l'utilisateur est un administrateur
         if request.user.is_authenticated and hasattr(request.user, 'is_admin'):
             return request.user.is_admin
         return False
-from rest_framework import permissions
 
 class IsDelegueOrAdmin(permissions.BasePermission):
     message = 'Vous n\'êtes pas autorisé à effectuer cette action.'
